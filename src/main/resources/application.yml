@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: trello
+  datasource:
+    url: jdbc:postgresql://localhost:5433/trello?useUnicode=true&serverTimezone=UTC
+    username: postgres
+    password: qwerty
+  liquibase:
+    change-log: db/changelog/changelog-master.xml
+  jpa:
+    hibernate:
+      ddl-auto: none
+
