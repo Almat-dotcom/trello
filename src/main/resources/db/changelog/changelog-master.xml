@@ -6,4 +6,5 @@
                                 http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
     <include author="almatsagandykov" file="changes/25-06-02-19-28-create-user-role-tables.sql" relativeToChangelogFile="true" />
     <include author="almatsagandykov" file="changes/25-06-02-19-37-insert-users-data.sql" relativeToChangelogFile="true" />
+    <include author="almatsagandykov" file="changes/25-06-04-19-43-40-create-task-table.sql" relativeToChangelogFile="true" />
 </databaseChangeLog>
