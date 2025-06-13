@@ -31,15 +31,7 @@ public class RoleController {
     @PostMapping("/assign-role")
     public ResponseEntity<Void> addRole(@RequestParam(name = "username") String username,
                                         @RequestParam(name = "roleName") String role) {
-        try {
-            return new ResponseEntity<>(roleService.addRole(username, role), HttpStatus.OK);
-        } catch (UserNotExistException | RoleNotExistException e) {
-            log.error(e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity<>(roleService.addRole(username, role), HttpStatus.OK);
     }
 
     @Operation(summary = "Удаление роля", description = "Удаляет роль у пользователя по имени пользователя и имени роли")

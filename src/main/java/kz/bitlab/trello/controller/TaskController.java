@@ -7,11 +7,16 @@ import jakarta.validation.Valid;
 import kz.bitlab.trello.dto.TaskAssignRecord;
 import kz.bitlab.trello.dto.TaskCreateRecord;
 import kz.bitlab.trello.dto.TaskFullRecord;
+import kz.bitlab.trello.enums.TaskStatus;
 import kz.bitlab.trello.exception.TaskNotExistException;
 import kz.bitlab.trello.exception.UserNotExistException;
 import kz.bitlab.trello.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +27,15 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class TaskController {
     private final TaskService taskService;
+
+    @GetMapping
+    public ResponseEntity<Page<TaskFullRecord>> getTasks(
+            @RequestParam(name = "title", required = false) String title,
+            @RequestParam(name = "status", required = false) TaskStatus status,
+            @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.ASC)
+            Pageable pageable) {
+        return new ResponseEntity<>(taskService.getTasks(title,status, pageable), HttpStatus.OK);
+    }
 
     @Operation(summary = "Создание задачи", description = "Создает новую задачу с заданными параметрами")
     @ApiResponses(value = {
@@ -50,15 +64,7 @@ public class TaskController {
     })
     @GetMapping("/{id}")
     public ResponseEntity<TaskFullRecord> getTask(@PathVariable Long id) {
-        try {
             return new ResponseEntity<>(taskService.getTask(id), HttpStatus.OK);
-        } catch (TaskNotExistException e) {
-            log.error(e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
 
     @Operation(summary = "Обновление задачи", description = "Обновляет существующую задачу с заданными параметрами")

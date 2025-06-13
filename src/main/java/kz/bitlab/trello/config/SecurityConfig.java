@@ -49,7 +49,8 @@ public class SecurityConfig {
                         auth -> auth
                                 .requestMatchers("v1/register/**").permitAll()
                                 .requestMatchers("v1/change-password/**").permitAll()
-                                .requestMatchers("swagger-ui/**").permitAll()
+                                .requestMatchers("swagger-ui/**").anonymous()
+                                .requestMatchers("swagger-ui/index.html").anonymous()
                                 .requestMatchers("v1/role/**").hasAnyRole("ADMIN")
                                 .anyRequest().authenticated()
                 ).build();

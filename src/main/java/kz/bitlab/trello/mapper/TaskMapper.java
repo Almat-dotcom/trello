@@ -8,6 +8,7 @@ import kz.bitlab.trello.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.springframework.data.domain.Page;
 
 @Mapper(componentModel = "spring",
         uses = {MapperHelper.class})
@@ -18,6 +19,10 @@ public interface TaskMapper {
     @Mapping(target = "user", source = "userId", qualifiedByName = "mapToUser")
     @Mapping(target = "status", constant = "NEW")
     Task toEntity(TaskCreateRecord request);
+
+    default Page<TaskFullRecord> map(Page<Task> data) {
+        return data.map(this::toFullRecord);
+    }
 
     void updateMap(TaskFullRecord taskFullRecord, @MappingTarget Task task);
 }
